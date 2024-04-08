@@ -72,6 +72,10 @@ async function RefreshBuildContainers() {
     }
 }
 
+function setHide(bool) {
+    window.ipc.setHide(bool);
+}
+
 RenderTrackedBuilds();
 
 function handleRunRequest(directory, build) {

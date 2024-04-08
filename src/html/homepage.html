@@ -10,6 +10,8 @@
         <header class="sticky-header">
             <button class="add-build-path" onclick="openModal()">Add build container path.</button>
             <button class="add-build-path" onclick="RefreshBuildContainers()">Refresh build containers.</button>
+            <label for="toggle-switch">Hide this window when running a build</label>
+            <input type="checkbox" id="toggle-switch" onchange="setHide(this.checked);">
         </header>
 
         <script>

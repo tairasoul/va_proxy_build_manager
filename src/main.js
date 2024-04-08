@@ -9,6 +9,8 @@ const store = new electron_store();
 /** @type {{[directory: string]: string[]}} */
 const tracked = store.get('tracked-builds', {});
 
+let hide = store.get("hide-on-run", false);
+
 const createWindow = () => {
     const win = new BrowserWindow({
         height: 1000,
@@ -40,6 +42,11 @@ const createWindow = () => {
         return builds;
     })
 
+    ipcMain.on("hide-on-run", (event, hide_run) => {
+        hide = hide_run;
+        store.set('hide-on-run', hide_run);
+    })
+
     ipcMain.on("run-build", (event, directory, build) => {
         const buildPath = path.join(directory, build);
         console.log(buildPath);
@@ -47,10 +54,12 @@ const createWindow = () => {
         console.log(executable);
         const exePath = path.join(buildPath, executable);
         console.log(exePath);
-        win.hide();
         const proc = child.execFile(exePath);
-        proc.on("close", () => win.show());
-        proc.on('exit', () => win.show());
+        if (hide) {
+            win.hide();
+            proc.on('close', () => win.show());
+            proc.on('exit', () => win.show());
+        }
     })
 
     ipcMain.on('track-build', (event, directory, build) => {

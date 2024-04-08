@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld('ipc', {
     runBuild: (directory, build) => ipcRenderer.send("run-build", directory, build),
     stopTrackingBuild: (directory, build) => ipcRenderer.send("stop-tracking-build", directory, build),
     getTrackedBuilds: () => ipcRenderer.invoke("get-tracked-builds"),
-    trackBuild: (directory, build) => ipcRenderer.send('track-build', directory, build)
+    trackBuild: (directory, build) => ipcRenderer.send('track-build', directory, build),
+    setHide: (bool) => ipcRenderer.send("hide-on-run", bool)
 })
